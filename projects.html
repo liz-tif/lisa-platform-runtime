@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform as Runtime — Projects</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="pages.css">
+  <link rel="stylesheet" href="transitions.css">
+  <link rel="stylesheet" href="tooltips.css">
+  <style>
+    /* Projects Portfolio mit modernen CSS-Features */
+
+    .projects-hero {
+      text-align: center;
+      padding: 4rem 1rem;
+      background: var(--color-bg);
+    }
+
+    .projects-hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--color-text);
+      margin-bottom: 1rem;
+    }
+
+    .projects-hero p {
+      color: var(--color-text-muted);
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .project-card {
+      background: var(--color-card);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* :has() - Featured Projects bekommen andere Styling */
+    .project-card:has(.badge-featured) {
+      border-color: var(--color-featured-border);
+      background: var(--color-featured-tint);
+      box-shadow: var(--shadow-card), 0 0 0 4px var(--color-featured-tint);
+    }
+
+    /* :has() - Interactive State bei Link-Hover */
+    .project-card:has(.project-link:hover) {
+      border-color: var(--color-brand);
+      transform: translateY(-4px);
+    }
+
+    .project-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg,
+        color-mix(in oklch, var(--color-brand) 30%, var(--color-bg)) 0%,
+        color-mix(in oklch, var(--color-brand) 10%, var(--color-bg)) 100%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: color-mix(in oklch, var(--black) 10%, transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover .project-image::before {
+      opacity: 1;
+    }
+
+    .project-content {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .badge-featured {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--color-brand);
+      color: var(--color-card);
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .project-description {
+      color: var(--color-text-muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      flex: 1;
+    }
+
+    /* Subgrid - Metadaten im Grid ausrichten */
+    .project-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .project-meta-item {
+      text-align: center;
+      padding: 0.5rem;
+      background: color-mix(in oklch, var(--color-muted) 15%, transparent);
+      border-radius: var(--radius-button);
+      font-size: 0.875rem;
+    }
+
+    .meta-label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-value {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      padding: 0.25rem 0.5rem;
+      background: color-mix(in oklch, var(--color-brand) 10%, transparent);
+      border: 1px solid var(--color-brand);
+      border-radius: var(--radius-button);
+      font-size: 0.75rem;
+      color: var(--color-brand);
+      font-weight: 500;
+    }
+
+    .project-link {
+      display: inline-block;
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--color-brand);
+      color: var(--color-card);
+      text-align: center;
+      text-decoration: none;
+      border-radius: var(--radius-button);
+      font-weight: 600;
+      transition: background 0.2s ease;
+      margin-top: 1rem;
+    }
+
+    .project-link:hover {
+      background: var(--color-button-hover);
+    }
+
+    /* @container - Responsive Typography */
+    .project-content {
+      container-type: inline-size;
+    }
+
+    .project-title {
+      font-size: clamp(1.25rem, 4cqi, 1.75rem);
+    }
+
+    .project-description {
+      font-size: clamp(0.875rem, 2.5cqi, 1rem);
+    }
+
+    /* View Transitions für Smooth Navigation */
+    @view-transition {
+      navigation: auto;
+    }
+
+    ::view-transition-old(project-card),
+    ::view-transition-new(project-card) {
+      animation-duration: 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <a href="index.html" class="brand">Platform-as-Runtime</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="projects.html" aria-current="page">Projects</a>
+      <a href="profile.html">Profile</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="projects-hero">
+      <h1>Design & Development Portfolio</h1>
+      <p>Eine Auswahl meiner Projekte — von Brand Design über Frontend Development bis hin zu Complete Plattforms.</p>
+    </section>
+
+    <section class="projects-grid">
+      <article class="project-card">
+        <div class="project-image">🎨</div>
+        <div class="project-content">
+          <span class="badge-featured">Featured</span>
+          <h2 class="project-title">Brand Identity System</h2>
+          <p class="project-description">
+            Komplettes Brand-System für eine Tech-Agentur. Inklusive Logo-Marken,
+            Farbpalette, Typography Guidelines und Brand Assets für Web & Print.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Figma</span>
+            <span class="tag">Illustrator</span>
+            <span class="tag">Brand Strategy</span>
+          </div>
+          <div class="project-meta">
+            <div class="project-meta-item">
+              <span class="meta-label">Dauer</span>
+              <span class="meta-value">8 Wochen</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">Tools</span>
+              <span class="meta-value">3</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">Assets</span>
+              <span class="meta-value">50+</span>
+            </div>
+          </div>
+          <a href="#" class="project-link">Projekt ansehen</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-image">💻</div>
+        <div class="project-content">
+          <h2 class="project-title">Component Library</h2>
+          <p class="project-description">
+            Eigene Component Library mit 30+ wiederverwendbaren UI-Komponenten.
+            Vollständig dokumentiert mit Storybook, themable via CSS Tokens,
+            Accessibility-first mit ARIA-Labels.
+          </p>
+          <div class="project-tags">
+            <span class="tag">React</span>
+            <span class="tag">CSS Tokens</span>
+            <span class="tag">Storybook</span>
+          </div>
+          <div class="project-meta">
+            <div class="project-meta-item">
+              <span class="meta-label">Components</span>
+              <span class="meta-value">32</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">Themes</span>
+              <span class="meta-value">5</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">a11y Score</span>
+              <span class="meta-value">98%</span>
+            </div>
+          </div>
+          <a href="#" class="project-link">Projekt ansehen</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-image">🎯</div>
+        <div class="project-content">
+          <span class="badge-featured">Featured</span>
+          <h2 class="project-title">SaaS Dashboard</h2>
+          <p class="project-description">
+            Analytics Dashboard für ein B2B SaaS-Startup. Real-time Data Visualization,
+            user-specific Reports, collaborative Features. Performance-optimiert
+            mit Virtual Scrolling und lazy loading.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Vue.js</span>
+            <span class="tag">D3.js</span>
+            <span class="tag">WebSocket</span>
+          </div>
+          <div class="project-meta">
+            <div class="project-meta-item">
+              <span class="meta-label">Charts</span>
+              <span class="meta-value">12</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">Users</span>
+              <span class="meta-value">2.5k</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">Performance</span>
+              <span class="meta-value">98/100</span>
+            </div>
+          </div>
+          <a href="#" class="project-link">Projekt ansehen</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-image">📱</div>
+        <div class="project-content">
+          <h2 class="project-title">Mobile App Design</h2>
+          <p class="project-description">
+            Native iOS & Android App für einen Fitness-Tracker. Complete User Journey
+            von Onboarding über Workout-Planning bis Social Features. Prototypen
+            in Figma, Development in React Native.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Figma</span>
+            <span class="tag">React Native</span>
+            <span class="tag">UX Research</span>
+          </div>
+          <div class="project-meta">
+            <div class="project-meta-item">
+              <span class="meta-label">Screens</span>
+              <span class="meta-value">45</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">User Tests</span>
+              <span class="meta-value">8</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">Platforms</span>
+              <span class="meta-value">2</span>
+            </div>
+          </div>
+          <a href="#" class="project-link">Projekt ansehen</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-image">🚀</div>
+        <div class="project-content">
+          <h2 class="project-title">E-Commerce Platform</h2>
+          <p class="project-description">
+            Complete E-Commerce Plattform für ein Fashion-Label. Product Catalog,
+            Shopping Cart, Payment Integration, Order Management. Headless Architecture
+            mit Shopify als Backend.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">Shopify</span>
+            <span class="tag">Stripe</span>
+          </div>
+          <div class="project-meta">
+            <div class="project-meta-item">
+              <span class="meta-label">Products</span>
+              <span class="meta-value">200+</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">Conversion</span>
+              <span class="meta-value">3.2%</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">Load Time</span>
+              <span class="meta-value">&lt;1s</span>
+            </div>
+          </div>
+          <a href="#" class="project-link">Projekt ansehen</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-image">✨</div>
+        <div class="project-content">
+          <span class="badge-featured">Featured</span>
+          <h2 class="project-title">Design System Migration</h2>
+          <p class="project-description">
+            Migration einer Legacy App auf ein modernes Design System. Schrittweise
+            Überführung von 150+ Components, Token-basiertes Theming, Documentation
+            und Developer Workshops.
+          </p>
+          <div class="project-tags">
+            <span class="tag">CSS Tokens</span>
+            <span class="tag">Migration</span>
+            <span class="tag">Documentation</span>
+          </div>
+          <div class="project-meta">
+            <div class="project-meta-item">
+              <span class="meta-label">Components</span>
+              <span class="meta-value">150</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">Workshops</span>
+              <span class="meta-value">6</span>
+            </div>
+            <div class="project-meta-item">
+              <span class="meta-label">Time Saved</span>
+              <span class="meta-value">40%</span>
+            </div>
+          </div>
+          <a href="#" class="project-link">Projekt ansehen</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Advanced CSS Cohort · Mai 2026</p>
+  </footer>
+</body>
+</html>

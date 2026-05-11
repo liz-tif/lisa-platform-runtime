@@ -14,13 +14,14 @@
   --slate-700: #334155;
   --slate-900: #0f172a;
   --indigo-500: #6366f1;
+  --purple-500: oklch(0.65 0.25 285);
   --white: #ffffff;
   --black: #000000;
 }
 
 /* LAYER 2 — SEMANTIC (Bedeutung, nicht Zahl) */
 :root {
-  --color-brand:        var(--indigo-500);
+  --color-brand:        var(--purple-500);
   --color-text:         var(--slate-900);
   --color-text-muted:   var(--slate-500);
   --color-bg:           var(--slate-50);
@@ -44,3 +45,14 @@
   --shadow-card: 0 1px 2px color-mix(in oklch, var(--black) 4%, transparent),
                  0 4px 12px color-mix(in oklch, var(--black) 6%, transparent);
 }
+
+/* Cascade-Frage:
+   1. Auf welcher Ebene ist --color-brand definiert (Layer 1, 2, oder 3)?
+      --color-brand ist auf Layer 2 (Semantic) definiert als var(--indigo-500).  
+   2. Was würde passieren, wenn ich in der .login-card-Regel
+      --color-brand neu setze?
+      Das Überschreiben in .login-card würde den neuen Wert für dieses Element UND alle Layer-3-Tokens neu berechnen,
+      da diese von --color-brand abhängen.
+   3. Wäre das eine gute Idee?
+      Das ist keine gute Idee, weil es das zentrale 3-Layer-System bricht und zu unerwarteten Side-Effekten führt —  
+      besser wäre ein neues Semantic-Token in Layer 2.    */

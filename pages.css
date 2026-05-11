@@ -104,6 +104,15 @@
      in jeder Card gleich hoch. Code in der Lecture, Block B. */
 }
 
+/* Box-Model-Frage: was wäre die tatsächliche Breite einer .plan-Card,
+   wenn box-sizing NICHT border-box wäre?
+   Antwort: ... 
+   - Mit border-box (aktuell): 260px Gesamtbreite
+   - Mit content-box: 326px Gesamtbreite
+
+  Die Card würde also 66px breiter sein als beabsichtigt, da Padding (64px) und Border (2px) zur definierten Breite
+  hinzugefügt würden statt eingerechnet zu werden. */
+
 .plan {
   background: var(--color-card);
   border: 1px solid var(--color-border);
