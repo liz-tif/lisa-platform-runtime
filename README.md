@@ -1,6 +1,8 @@
 # Lisa — Personal Platform-Runtime
 
-[Live on Vercel](VERCEL-URL) · [Live on GitHub Pages](GITHUB-PAGES-URL)
+[Live on Vercel](https://lisa-platform.vercel.app/) · [Live on GitHub Pages](https://github.com/liz-tif/lisa-platform-runtime)
+
+
 
 ## Was das ist
 Ein Multi-Page-Personal-Showcase, gebaut mit Modern CSS Features (Mai 2026).
@@ -11,7 +13,7 @@ Kein Framework, kein Build-Step, vier Pages, ein Token-System.
 - **Pricing** — Subgrid-aligned Plan-Cards
 - **Profile** — Stat-Cards mit Anchor-Positioned-Tooltips
 - **Login** — Form mit :has()-basierter Email-Validation
-- **[deine neue Page]** — [eine Zeile Beschreibung]
+- **Projects** — Portfolio mit Projekt-Cards (Grid + :has() + Container Queries)
 
 ## Modern CSS Features
 - 3-Layer Token-System (Primitives → Semantic → Component)
